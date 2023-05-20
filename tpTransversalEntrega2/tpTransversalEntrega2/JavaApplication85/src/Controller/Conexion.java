@@ -13,11 +13,9 @@ import javax.swing.JOptionPane;
  * @author juany
  */
 public class Conexion {
-
     private static Connection con = null;
 
-    private Conexion() {
-    }
+    private Conexion() {}
 
     public static Connection conectar() {
 

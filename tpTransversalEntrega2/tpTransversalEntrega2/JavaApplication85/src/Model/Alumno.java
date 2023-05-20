@@ -19,7 +19,7 @@ public class Alumno {
     public Alumno() {
     }
     //Constructor lleno
-    public Alumno(int alumno_id, String nombre, String apellido, String dni, Date fecha_nacimiento, boolean estado) {
+    public Alumno(int alumno_id, String nombre, String apellido, String dni, LocalDate fecha_nacimiento, boolean estado) {
         this.alumno_id = alumno_id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -28,7 +28,7 @@ public class Alumno {
         this.estado = estado;
     }
     //Constructor sin id
-    public Alumno(String nombre, String apellido, String dni, Date fecha_nacimiento, boolean estado) {
+    public Alumno(String nombre, String apellido, String dni, LocalDate fecha_nacimiento, boolean estado) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
