@@ -6,13 +6,14 @@
 package Model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class Alumno {
     private int alumno_id;
     private String nombre;
     private String apellido;
     private String dni;
-    private Date fecha_nacimiento;
+    private LocalDate fecha_nacimiento;
     private boolean estado;
     //Constructor vacio
     public Alumno() {
@@ -67,13 +68,14 @@ public class Alumno {
         this.dni = dni;
     }
 
-    public Date getFecha_nacimiento() {
+    public LocalDate getFecha_nacimiento() {
         return fecha_nacimiento;
     }
 
-    public void setFecha_nacimiento(Date fecha_nacimiento) {
+    public void setFecha_nacimiento(LocalDate fecha_nacimiento) {
         this.fecha_nacimiento = fecha_nacimiento;
     }
+
 
     public boolean isEstado() {
         return estado;

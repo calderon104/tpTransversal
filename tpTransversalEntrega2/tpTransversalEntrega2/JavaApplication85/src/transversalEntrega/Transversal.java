@@ -5,7 +5,7 @@
  */
 package transversalEntrega;
 
-import DB.Conexion;
+import Controller.Conexion;
 
 /**
  *
@@ -17,7 +17,6 @@ public class Transversal {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       Conexion c = new Conexion();
     }
     
 }
