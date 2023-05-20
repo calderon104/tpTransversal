@@ -7,10 +7,6 @@ package Model;
 
 import java.sql.Date;
 
-/**
- *
- * @author Gonza
- */
 public class Alumno {
     private int alumno_id;
     private String nombre;
