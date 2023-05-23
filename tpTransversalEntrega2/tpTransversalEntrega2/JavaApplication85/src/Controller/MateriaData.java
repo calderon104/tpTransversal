@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -78,6 +79,37 @@ public class MateriaData {
         }
         
         return m;
+    }
+    
+    public void eliminarMateria(int id){
+        String sql= "DELETE FROM materias WHERE id_materia= ?";
+        try{
+            PreparedStatement ps= conn.prepareCall(sql);
+            ps.setInt(1, id);
+            
+            if(!ps.execute()){
+                JOptionPane.showMessageDialog(null,"Error al borrar!");
+            }
+        }
+        catch(SQLException e){
+            System.out.println("Algo salio mal: "+e.toString());
+        }
+    }
+    
+    public ArrayList<Materia> listarMaterias(){
+        String sql= "SELECT * FROM materias";
+        ArrayList<Materia> lm= new ArrayList();
+        try{
+            PreparedStatement ps = conn.prepareCall(sql);
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()){
+                lm.add(new Materia(rs.getInt("id_materia"), rs.getString("nombre"), rs.getInt("anio"), rs.getBoolean("estado")));                
+            }
+        }catch(SQLException e){
+            System.out.println("Algo salio mal : "+e.toString());
+        }
+        return lm;
     }
     
 }
