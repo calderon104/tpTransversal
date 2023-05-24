@@ -3,7 +3,7 @@ package Model;
 
 
 public class Inscripcion {
-    private String id_inscripcion;
+    private int id_inscripcion;
     private Alumno id_alumno;
     private Materia id_materia;
     private double nota;
@@ -11,7 +11,7 @@ public class Inscripcion {
     public Inscripcion() {
     }
     //Constructor lleno
-    public Inscripcion(String id_inscripcion, Alumno id_alumno, Materia id_materia, double nota) {
+    public Inscripcion(int id_inscripcion, Alumno id_alumno, Materia id_materia, double nota) {
         this.id_inscripcion = id_inscripcion;
         this.id_alumno = id_alumno;
         this.id_materia = id_materia;
@@ -24,11 +24,11 @@ public class Inscripcion {
         this.nota = nota;
     }
     
-    public String getId_inscripcion() {
+    public int getId_inscripcion() {
         return id_inscripcion;
     }
 
-    public void setId_inscripcion(String id_inscripcion) {
+    public void setId_inscripcion(int id_inscripcion) {
         this.id_inscripcion = id_inscripcion;
     }
 
