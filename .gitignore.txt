@@ -1,3 +1,0 @@
-Conexion.java
-.gitignore.txt
-build.properties
