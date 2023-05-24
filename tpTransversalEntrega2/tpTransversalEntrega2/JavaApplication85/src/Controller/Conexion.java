@@ -24,7 +24,7 @@ public class Conexion {
             String user = "root";
             String password = "";
             con = (Connection) DriverManager.getConnection(url, user, password);
-            System.out.println("Conexión exitosa a la base de datos!");
+           // System.out.println("Conexión exitosa a la base de datos!");
         } catch (SQLException e) {
 
             JOptionPane.showMessageDialog(null, "Error al conectar " + e.getMessage());

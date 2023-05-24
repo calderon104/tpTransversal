@@ -23,12 +23,12 @@ import javax.swing.JOptionPane;
  */
 public class CursadaData {
     
-        AlumnoData alumnoData;
-        MateriaData materiaData;
+        AlumnoData alumnoData= new AlumnoData();
+        MateriaData materiaData = new MateriaData(Conexion.conectar());
     
     
     public void guardarInscripcion(Inscripcion insc) {
-        String sql = "INSERT INTO inscripcion (id_alumno, id_materia, nota) VALUES";
+        String sql = "INSERT INTO inscripcion (id_alumno, id_materia, nota) VALUES (?,?,?)";
         try {
             PreparedStatement ps = Conexion.conectar().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); //DEVUEL CON SU KEY 
             ps.setInt(1, insc.getId_alumno().getAlumno_id());
@@ -51,21 +51,20 @@ public class CursadaData {
     
     public List<Inscripcion> obetenerInscripciones() {
         String sql = "SELECT * FROM inscripcion";
-        Inscripcion insc = null;
+        Inscripcion insc;
         List<Inscripcion> inscripciones = new ArrayList();
         try {
             PreparedStatement ps = Conexion.conectar().prepareStatement(sql);
             ResultSet rs;
             rs = ps.executeQuery();//devuelve un conjunto de resultados
-            if (rs.next()) {
+            while (rs.next()) {
+                insc= new Inscripcion();
                 insc.setId_inscripcion(rs.getInt("id_inscripcion"));
                 insc.setId_alumno(alumnoData.buscarAlumno(rs.getInt("id_alumno")));
                 insc.setId_materia(materiaData.buscarMateria(rs.getInt("id_materia")));
                 insc.setNota(rs.getDouble("nota"));
                 inscripciones.add(insc);
-            } else {
-                JOptionPane.showMessageDialog(null, "No existen inscripciones");
-            }
+            } 
             ps.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla inscripcion " + e.getMessage());
@@ -76,7 +75,7 @@ public class CursadaData {
     
     public List<Inscripcion> obetenerInscripcionesPorAlumno(int id) {
         String sql = "SELECT * FROM inscripcion WHERE id_alumno = ?";
-        Inscripcion insc = null;
+        Inscripcion insc = new Inscripcion();
         List<Inscripcion> inscripciones = new ArrayList();
         Alumno alumno = alumnoData.buscarAlumno(id);
         try {

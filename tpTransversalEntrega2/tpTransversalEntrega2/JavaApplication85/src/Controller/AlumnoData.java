@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 public class AlumnoData {
     
     public void guardarAlumno(Alumno alumno) {
-        String sql = "INSERT into alumno(nombre,apellido,dni,fecha_nacimiento,estado)";
+        String sql = "INSERT into alumno(nombre,apellido,dni,fecha_nacimiento,estado) VALUES (?,?,?,?,?)";
         try {
             PreparedStatement ps = Conexion.conectar().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); //DEVUEL CON SU KEY 
             ps.setString(1, alumno.getNombre());

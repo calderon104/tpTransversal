@@ -33,8 +33,11 @@ public class MateriaData {
             ps.setString(1, m.getNombre());
             ps.setInt(2, m.getAnio());
             ps.setBoolean(3, m.isEstado());
-            
-            if(ps.execute()){
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next()){
+                
+                m.setId_materia(rs.getInt(1));
                 System.out.println("Materia cargada con exito");
             }
         }catch(SQLException e){
