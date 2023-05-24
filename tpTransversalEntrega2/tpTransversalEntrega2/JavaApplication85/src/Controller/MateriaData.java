@@ -19,10 +19,10 @@ import javax.swing.JOptionPane;
  */
 public class MateriaData {
     private Connection conn;
-    private Conexion conexion;
+    
 
-    public MateriaData(Conexion conexion) {
-        this.conexion = conexion;
+    public MateriaData(Connection conexion) {
+        this.conn = conexion;
     }
     
     public void guardarMateria(Materia m){
@@ -43,7 +43,7 @@ public class MateriaData {
     }
     
     public Materia buscarMateria(int id){
-        String sql = "SELECT * FROM materias WHERE id=?";
+        String sql = "SELECT * FROM materias WHERE id_materia=?";
         try{
             PreparedStatement ps = conn.prepareCall(sql);
             ps.setInt(1, id);
@@ -82,14 +82,13 @@ public class MateriaData {
     }
     
     public void eliminarMateria(int id){
-        String sql= "DELETE FROM materias WHERE id_materia= ?";
+        String sql= "UPDATE materias SET estado=0 WHERE id_materia= ?";
         try{
-            PreparedStatement ps= conn.prepareCall(sql);
+            PreparedStatement ps= conn.prepareStatement(sql);
             ps.setInt(1, id);
             
-            if(!ps.execute()){
-                JOptionPane.showMessageDialog(null,"Error al borrar!");
-            }
+            ps.execute();
+                
         }
         catch(SQLException e){
             System.out.println("Algo salio mal: "+e.toString());
@@ -97,7 +96,7 @@ public class MateriaData {
     }
     
     public ArrayList<Materia> listarMaterias(){
-        String sql= "SELECT * FROM materias";
+        String sql= "SELECT * FROM materias WHERE estado=1";
         ArrayList<Materia> lm= new ArrayList();
         try{
             PreparedStatement ps = conn.prepareCall(sql);
