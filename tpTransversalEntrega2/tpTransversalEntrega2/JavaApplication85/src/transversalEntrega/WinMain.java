@@ -10,6 +10,7 @@ import Controller.Conexion;
 import Controller.CursadaData;
 import Controller.MateriaData;
 import Model.Alumno;
+import Model.Inscripcion;
 import Model.Materia;
 import javax.swing.table.DefaultTableModel;
 
@@ -166,9 +167,19 @@ public class WinMain extends javax.swing.JInternalFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left.png"))); // NOI18N
         jButton1.setText("Inscribir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/right.png"))); // NOI18N
         jButton2.setText("Anular");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -200,7 +211,7 @@ public class WinMain extends javax.swing.JInternalFrame {
         );
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/exit.png"))); // NOI18N
-        jButton3.setText("jButton3");
+        jButton3.setText("CERRAR");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -251,27 +262,52 @@ public class WinMain extends javax.swing.JInternalFrame {
 
     private void tblAlumnosMainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAlumnosMainMouseClicked
         // TODO add your handling code here:
+        actualizarTablasMaterias();
+
+
+    }//GEN-LAST:event_tblAlumnosMainMouseClicked
+
+    private void actualizarTablasMaterias() {
         int index = tblAlumnosMain.getSelectedRow();
 
         int idAlum = Integer.parseInt((tblAlumnosMain.getValueAt(index, 0).toString()));
-        
-        String[] colI= {"id","Materias Inscriptas","Año"};
-        DefaultTableModel tmI= new DefaultTableModel(colI,0);
-        for(Materia m: cd.obetenerMateriasCursadas(idAlum)){
-            Object[] dato= {m.getId_materia(),m.getNombre(),m.getAnio()};
+        String[] colI = {"id", "Materias Inscriptas", "Año"};
+        DefaultTableModel tmI = new DefaultTableModel(colI, 0);
+        for (Materia m : cd.obetenerMateriasCursadas(idAlum)) {
+            Object[] dato = {m.getId_materia(), m.getNombre(), m.getAnio()};
             tmI.addRow(dato);
         }
         tblInscriptas.setModel(tmI);
-        DefaultTableModel tmNI = new DefaultTableModel(colI,0);
-        for(Materia m: cd.obetenerMateriasNoCursadas(idAlum)){
-            Object[] dato= {m.getId_materia(),m.getNombre(),m.getAnio()};
+        DefaultTableModel tmNI = new DefaultTableModel(colI, 0);
+        for (Materia m : cd.obetenerMateriasNoCursadas(idAlum)) {
+            Object[] dato = {m.getId_materia(), m.getNombre(), m.getAnio()};
             tmNI.addRow(dato);
         }
         tblNoInscriptas.setModel(tmNI);
-        
-        
+    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int index = tblNoInscriptas.getSelectedRow();
+        int idMateria = Integer.parseInt(tblNoInscriptas.getValueAt(index, 0).toString());
+        index = tblAlumnosMain.getSelectedRow();
+        int idAlum = Integer.parseInt(tblAlumnosMain.getValueAt(index, 0).toString());
+        Inscripcion insc = new Inscripcion(ad.buscarAlumno(idAlum), md.buscarMateria(idMateria), 0);
+        cd.guardarInscripcion(insc);
 
-    }//GEN-LAST:event_tblAlumnosMainMouseClicked
+        actualizarTablasMaterias();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        int index = tblInscriptas.getSelectedRow();
+        int idMateria = Integer.parseInt(tblInscriptas.getValueAt(index, 0).toString());
+        index = tblAlumnosMain.getSelectedRow();
+        int idAlum = Integer.parseInt(tblAlumnosMain.getValueAt(index, 0).toString());
+
+        cd.borrarInscripcionMateriaAlumno(idAlum, idMateria);
+
+        actualizarTablasMaterias();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
