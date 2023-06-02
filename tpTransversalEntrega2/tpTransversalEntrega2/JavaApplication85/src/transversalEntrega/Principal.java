@@ -115,12 +115,12 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        formularioCargarAlumno fca = new formularioCargarAlumno();
-        fca.setVisible(true);
-        escritorio.removeAll();
-        escritorio.repaint();
-        escritorio.add(fca);
-        escritorio.moveToFront(fca);
+//        formularioCargarAlumno fca = new formularioCargarAlumno();
+//        fca.setVisible(true);
+//        escritorio.removeAll();
+//        escritorio.repaint();
+//        escritorio.add(fca);
+//        escritorio.moveToFront(fca);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**

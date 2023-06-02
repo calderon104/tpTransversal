@@ -88,8 +88,7 @@ public class MateriaData {
         String sql= "UPDATE materias SET estado=0 WHERE id_materia= ?";
         try{
             PreparedStatement ps= conn.prepareStatement(sql);
-            ps.setInt(1, id);
-            
+            ps.setInt(1, id);  
             ps.execute();
                 
         }

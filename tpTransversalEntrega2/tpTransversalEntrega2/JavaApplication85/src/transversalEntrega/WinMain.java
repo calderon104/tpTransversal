@@ -6,21 +6,44 @@
 package transversalEntrega;
 
 import Controller.AlumnoData;
+import Controller.Conexion;
 import Controller.CursadaData;
+import Controller.MateriaData;
+import Model.Alumno;
+import Model.Materia;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author juany
  */
 public class WinMain extends javax.swing.JInternalFrame {
+
     AlumnoData ad = new AlumnoData();
     CursadaData cd = new CursadaData();
+    MateriaData md = new MateriaData(Conexion.conectar());
+
     /**
      * Creates new form WinMain
      */
     public WinMain() {
         initComponents();
-        
+        cargarAlumnosMain();
+    }
+
+    private void cargarAlumnosMain() {
+        //CARGAMOS LOS ALUMNOS APENAS SE CREA LA INSTANCIA DE LA VENTANA
+        String[] cols = {"id", "Nombre", "Apellido", "DNI"};
+
+        DefaultTableModel tm = new DefaultTableModel(cols, 0);
+
+        for (Alumno a : ad.listaAlumnos()) {
+            Object[] dato = {a.getAlumno_id(), a.getNombre(), a.getApellido(), a.getDni()};
+            tm.addRow(dato);
+        }
+
+        tblAlumnosMain.setModel(tm);
+
     }
 
     /**
@@ -35,12 +58,12 @@ public class WinMain extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblAlumnosMain = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblInscriptas = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tblNoInscriptas = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -55,7 +78,7 @@ public class WinMain extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Alumnos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblAlumnosMain.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -66,7 +89,12 @@ public class WinMain extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        tblAlumnosMain.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblAlumnosMainMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblAlumnosMain);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -87,7 +115,7 @@ public class WinMain extends javax.swing.JInternalFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Materias", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblInscriptas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -106,12 +134,12 @@ public class WinMain extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
+        jScrollPane1.setViewportView(tblInscriptas);
+        if (tblInscriptas.getColumnModel().getColumnCount() > 0) {
+            tblInscriptas.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tblNoInscriptas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -130,10 +158,10 @@ public class WinMain extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable3);
-        if (jTable3.getColumnModel().getColumnCount() > 0) {
-            jTable3.getColumnModel().getColumn(0).setResizable(false);
-            jTable3.getColumnModel().getColumn(0).setHeaderValue("Materias Inscriptas");
+        jScrollPane3.setViewportView(tblNoInscriptas);
+        if (tblNoInscriptas.getColumnModel().getColumnCount() > 0) {
+            tblNoInscriptas.getColumnModel().getColumn(0).setResizable(false);
+            tblNoInscriptas.getColumnModel().getColumn(0).setHeaderValue("Materias Inscriptas");
         }
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left.png"))); // NOI18N
@@ -221,6 +249,30 @@ public class WinMain extends javax.swing.JInternalFrame {
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void tblAlumnosMainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAlumnosMainMouseClicked
+        // TODO add your handling code here:
+        int index = tblAlumnosMain.getSelectedRow();
+
+        int idAlum = Integer.parseInt((tblAlumnosMain.getValueAt(index, 0).toString()));
+        
+        String[] colI= {"id","Materias Inscriptas","Año"};
+        DefaultTableModel tmI= new DefaultTableModel(colI,0);
+        for(Materia m: cd.obetenerMateriasCursadas(idAlum)){
+            Object[] dato= {m.getId_materia(),m.getNombre(),m.getAnio()};
+            tmI.addRow(dato);
+        }
+        tblInscriptas.setModel(tmI);
+        DefaultTableModel tmNI = new DefaultTableModel(colI,0);
+        for(Materia m: cd.obetenerMateriasNoCursadas(idAlum)){
+            Object[] dato= {m.getId_materia(),m.getNombre(),m.getAnio()};
+            tmNI.addRow(dato);
+        }
+        tblNoInscriptas.setModel(tmNI);
+        
+        
+
+    }//GEN-LAST:event_tblAlumnosMainMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -232,8 +284,8 @@ public class WinMain extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
+    private javax.swing.JTable tblAlumnosMain;
+    private javax.swing.JTable tblInscriptas;
+    private javax.swing.JTable tblNoInscriptas;
     // End of variables declaration//GEN-END:variables
 }
