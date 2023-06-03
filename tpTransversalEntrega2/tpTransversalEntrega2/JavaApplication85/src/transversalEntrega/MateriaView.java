@@ -242,10 +242,7 @@ public class MateriaView extends javax.swing.JInternalFrame {
     private void btnEliminarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarMateriaActionPerformed
         int indice = jtMateria.getSelectedRow();
         int id = (int) jtMateria.getValueAt(indice,0);
-        String nombre = jtMateria.getValueAt(indice,1).toString();
-        int anio = Integer.parseInt(jtMateria.getValueAt(indice,2).toString());
-        Materia m = new Materia(id,nombre, anio, false);
-        md.modificarMateria(m);
+        md.eliminarMateria(id);
     }//GEN-LAST:event_btnEliminarMateriaActionPerformed
 
     private void jtfAMnombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfAMnombreActionPerformed
@@ -263,7 +260,10 @@ public class MateriaView extends javax.swing.JInternalFrame {
     private void btnEditarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarMateriaActionPerformed
         int indice = jtMateria.getSelectedRow();
         int id = (int) jtMateria.getValueAt(indice,0);
-        md.eliminarMateria(id);
+        String nombre = jtMateria.getValueAt(indice,1).toString();
+        int anio = Integer.parseInt(jtMateria.getValueAt(indice,2).toString());
+        Materia m = new Materia(id,nombre, anio, true);
+        md.modificarMateria(m);
     }//GEN-LAST:event_btnEditarMateriaActionPerformed
 
     private void btnBuscarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarMateriaActionPerformed

@@ -73,10 +73,10 @@ public class MateriaData {
             ps.setInt(2,m.getAnio());
             ps.setBoolean(3, m.isEstado());
             ps.setInt(4, m.getId_materia());
-            ps.execute();
-//            if(ps.execute()){
-//                JOptionPane.showMessageDialog(null, "Materia editada correctamente");
-//            }
+            
+            if(ps.execute()){
+                JOptionPane.showMessageDialog(null, "Materia editada correctamente");
+            }
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null,"Error al actualizar materia: "+e.toString());
         }
@@ -90,7 +90,7 @@ public class MateriaData {
             PreparedStatement ps= conn.prepareStatement(sql);
             ps.setInt(1, id);  
             ps.execute();
-                
+            JOptionPane.showMessageDialog(null, "Materia eliminada");
         }
         catch(SQLException e){
             System.out.println("Algo salio mal: "+e.toString());
