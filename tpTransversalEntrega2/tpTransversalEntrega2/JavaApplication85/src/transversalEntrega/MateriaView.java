@@ -250,7 +250,7 @@ public class MateriaView extends javax.swing.JInternalFrame {
         int id = (int) jtMateria.getValueAt(indice,0);
         String nombre = jtMateria.getValueAt(indice,1).toString();
         int anio = Integer.parseInt(jtMateria.getValueAt(indice,2).toString());
-        Materia m = new Materia(nombre, anio, true);
+        Materia m = new Materia(id,nombre, anio, true);
         md.modificarMateria(m);
     }//GEN-LAST:event_btnEditarMateriaActionPerformed
 
