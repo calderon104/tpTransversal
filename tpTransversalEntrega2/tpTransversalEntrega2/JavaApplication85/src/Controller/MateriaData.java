@@ -48,7 +48,7 @@ public class MateriaData {
     public Materia buscarMateria(int id){
         String sql = "SELECT * FROM materias WHERE id_materia=?";
         try{
-            PreparedStatement ps = conn.prepareCall(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             
@@ -62,21 +62,21 @@ public class MateriaData {
         }
         return null;
     }
-    public Materia modificarMateria(int id , Materia m){
+    public Materia modificarMateria(Materia m){
         
-        String sql = "UPDATE materias SET id_materia= ?, nombre=?,anio=?,estado=? WHERE id_materia=?";
+        String sql = "UPDATE materias SET nombre=?,anio=?,estado=? WHERE id_materia=?";
         
         try{
-            PreparedStatement ps = conn.prepareCall(sql);
-            ps.setInt(1,m.getId_materia());
-            ps.setString(2,m.getNombre());
-            ps.setInt(3,m.getAnio());
-            ps.setBoolean(4, m.isEstado());
-            ps.setInt(5, id);
-            
-            if(ps.execute()){
-                System.out.println("Modificacion exitosa");
-            }
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1,m.getNombre());
+            ps.setInt(2,m.getAnio());
+            ps.setBoolean(3, m.isEstado());
+            ps.setInt(4, m.getId_materia());
+            ps.execute();
+            System.out.println("hola mundo");
+//            if(ps.execute()){
+//                JOptionPane.showMessageDialog(null, "Materia editada correctamente");
+//            }
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null,"Error al actualizar materia: "+e.toString());
         }
@@ -101,7 +101,7 @@ public class MateriaData {
         String sql= "SELECT * FROM materias WHERE estado=1";
         ArrayList<Materia> lm= new ArrayList();
         try{
-            PreparedStatement ps = conn.prepareCall(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             
             while(rs.next()){
