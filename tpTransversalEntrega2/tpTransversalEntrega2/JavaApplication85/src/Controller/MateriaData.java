@@ -73,7 +73,6 @@ public class MateriaData {
             ps.setBoolean(3, m.isEstado());
             ps.setInt(4, m.getId_materia());
             ps.execute();
-            System.out.println("hola mundo");
 //            if(ps.execute()){
 //                JOptionPane.showMessageDialog(null, "Materia editada correctamente");
 //            }
