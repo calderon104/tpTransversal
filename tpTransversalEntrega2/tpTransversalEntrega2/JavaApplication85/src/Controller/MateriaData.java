@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -29,16 +30,16 @@ public class MateriaData {
         String sql= "INSERT INTO materias VALUES (null,?,?,?)";
         
         try{
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = Conexion.conectar().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, m.getNombre());
             ps.setInt(2, m.getAnio());
             ps.setBoolean(3, m.isEstado());
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if(rs.next()){
-                
+                System.out.println(rs.getInt(1));
                 m.setId_materia(rs.getInt(1));
-                System.out.println("Materia cargada con exito");
+                JOptionPane.showMessageDialog(null, "Materia agregada.");
             }
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Error al cargar materia: "+e.toString());

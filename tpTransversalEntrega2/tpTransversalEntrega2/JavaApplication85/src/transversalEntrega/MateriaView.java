@@ -71,6 +71,11 @@ public class MateriaView extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jtMateria);
 
         btnBuscarMateria.setText("Buscar");
+        btnBuscarMateria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarMateriaActionPerformed(evt);
+            }
+        });
 
         jtfBuscarNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,6 +104,11 @@ public class MateriaView extends javax.swing.JInternalFrame {
         jLabel5.setText("Año");
 
         btnAgregarMateria.setText("Agregar");
+        btnAgregarMateria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarMateriaActionPerformed(evt);
+            }
+        });
 
         btnEliminarMateria.setText("Eliminar");
         btnEliminarMateria.addActionListener(new java.awt.event.ActionListener() {
@@ -230,7 +240,12 @@ public class MateriaView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jtfBuscarNombreActionPerformed
 
     private void btnEliminarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarMateriaActionPerformed
-        // TODO add your handling code here:
+        int indice = jtMateria.getSelectedRow();
+        int id = (int) jtMateria.getValueAt(indice,0);
+        String nombre = jtMateria.getValueAt(indice,1).toString();
+        int anio = Integer.parseInt(jtMateria.getValueAt(indice,2).toString());
+        Materia m = new Materia(id,nombre, anio, false);
+        md.modificarMateria(m);
     }//GEN-LAST:event_btnEliminarMateriaActionPerformed
 
     private void jtfAMnombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfAMnombreActionPerformed
@@ -242,17 +257,42 @@ public class MateriaView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jtfAManioActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
+       dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnEditarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarMateriaActionPerformed
         int indice = jtMateria.getSelectedRow();
         int id = (int) jtMateria.getValueAt(indice,0);
-        String nombre = jtMateria.getValueAt(indice,1).toString();
-        int anio = Integer.parseInt(jtMateria.getValueAt(indice,2).toString());
-        Materia m = new Materia(id,nombre, anio, true);
-        md.modificarMateria(m);
+        md.eliminarMateria(id);
     }//GEN-LAST:event_btnEditarMateriaActionPerformed
+
+    private void btnBuscarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarMateriaActionPerformed
+        String nombMat= jtfBuscarNombre.getText();
+        String cols[] = {"id", "nombre", "año"};
+        DefaultTableModel tm = new DefaultTableModel(cols, 0) {
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                if (i1 == 0) {
+                    return false;
+                }
+                return true;
+            }
+        };
+        for (Materia m : md.listarMaterias()) {
+            if(m.getNombre().equals(nombMat)){
+                Object[] dato = {m.getId_materia(), m.getNombre(), m.getAnio()};
+            tm.addRow(dato);
+            }
+            jtMateria.setModel(tm);
+        }
+    }//GEN-LAST:event_btnBuscarMateriaActionPerformed
+
+    private void btnAgregarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarMateriaActionPerformed
+        String nombMat= jtfAMnombre.getText();
+        int anio = Integer.parseInt(jtfAManio.getText());
+        Materia m= new Materia(nombMat, anio, true);
+        md.guardarMateria(m);
+    }//GEN-LAST:event_btnAgregarMateriaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -276,7 +316,7 @@ public class MateriaView extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private void cargarMaterias() {
-        String cols[] = {"id", "nombre", "anio"};
+        String cols[] = {"id", "nombre", "año"};
         DefaultTableModel tm = new DefaultTableModel(cols, 0) {
             @Override
             public boolean isCellEditable(int i, int i1) {
