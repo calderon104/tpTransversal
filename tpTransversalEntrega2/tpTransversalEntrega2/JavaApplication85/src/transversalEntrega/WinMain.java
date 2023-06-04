@@ -54,6 +54,17 @@ public class WinMain extends javax.swing.JInternalFrame {
         tblAlumnosMain.setModel(tm);
 
     }
+    private void vaciarMateriasMain(){
+        String[] cols = {"id","nombre","año"};
+        DefaultTableModel tm = new DefaultTableModel(cols,0){
+            @Override
+            public boolean isCellEditable(int row, int col){
+                return false;
+            }
+        };
+        tblInscriptas.setModel(tm);
+        tblNoInscriptas.setModel(tm);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -386,6 +397,7 @@ public class WinMain extends javax.swing.JInternalFrame {
         
         
         
+        
         Matcher m1= pat1.matcher(campo);
         Matcher m2= pat2.matcher(campo);
         String[] cols= {"id","nombre","apellido","dni"};
@@ -415,6 +427,7 @@ public class WinMain extends javax.swing.JInternalFrame {
         }else{
             cargarAlumnosMain();
         }
+        vaciarMateriasMain();
         
         
         
