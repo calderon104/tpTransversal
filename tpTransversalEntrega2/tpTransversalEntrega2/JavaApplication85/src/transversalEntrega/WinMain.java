@@ -12,6 +12,8 @@ import Controller.MateriaData;
 import Model.Alumno;
 import Model.Inscripcion;
 import Model.Materia;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -66,6 +68,9 @@ public class WinMain extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblAlumnosMain = new javax.swing.JTable();
+        txtFiltro = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInscriptas = new javax.swing.JTable();
@@ -105,6 +110,16 @@ public class WinMain extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(tblAlumnosMain);
 
+        txtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFiltroKeyReleased(evt);
+            }
+        });
+
+        jLabel4.setText("Buscar");
+
+        jLabel5.setText("(Ingrese : nombre, apellido o DNI)");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -113,18 +128,29 @@ public class WinMain extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Materias", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
 
-        tblInscriptas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Inscripto", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
         tblInscriptas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -264,13 +290,13 @@ public class WinMain extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         pack();
@@ -348,6 +374,52 @@ public class WinMain extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void txtFiltroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroKeyReleased
+        // TODO add your handling code here:
+        String campo= txtFiltro.getText().toString();
+        String patronTexto= "^[A-Za-z]+";
+        String patronDni = "^"+campo+"";
+        
+        Pattern pat1= Pattern.compile(patronTexto);
+        Pattern pat2= Pattern.compile(patronDni);
+        
+        
+        
+        
+        Matcher m1= pat1.matcher(campo);
+        Matcher m2= pat2.matcher(campo);
+        String[] cols= {"id","nombre","apellido","dni"};
+        DefaultTableModel tm = new DefaultTableModel(cols,0){
+            @Override
+            public boolean isCellEditable(int i,int il){
+                return false;
+            }
+        };
+        
+        if(m1.matches()){
+            for(Alumno a: ad.listaAlumnos()){
+                if(a.getNombre().toLowerCase().contains(campo.toLowerCase()) || a.getApellido().toLowerCase().contains(campo.toLowerCase())){
+                    Object[] dato = {a.getAlumno_id(),a.getNombre(),a.getApellido(),a.getDni()};
+                    tm.addRow(dato);
+                }
+            }
+            tblAlumnosMain.setModel(tm);
+        }else if(m2.matches()){
+            for(Alumno a: ad.listaAlumnos()){
+                if(a.getDni().contains(campo)){
+                    Object[] dato = {a.getAlumno_id(),a.getNombre(),a.getApellido(),a.getDni()};
+                    tm.addRow(dato);
+                }
+            }
+            tblAlumnosMain.setModel(tm);
+        }else{
+            cargarAlumnosMain();
+        }
+        
+        
+        
+    }//GEN-LAST:event_txtFiltroKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -356,6 +428,8 @@ public class WinMain extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -364,5 +438,6 @@ public class WinMain extends javax.swing.JInternalFrame {
     private javax.swing.JTable tblAlumnosMain;
     private javax.swing.JTable tblInscriptas;
     private javax.swing.JTable tblNoInscriptas;
+    private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }

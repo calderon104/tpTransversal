@@ -101,7 +101,7 @@ public class CursadaData {
 
     public List<Materia> obetenerMateriasCursadas(int id) {
         //String sql = "SELECT * FROM materias where id_materia in (SELECT id_materia FROM inscripcion WHERE id_alumno = ? AND nota IS NOT NULL)";
-        String sql = "SELECT * FROM materias where id_materia in (SELECT id_materia FROM inscripcion WHERE id_alumno = ?)";
+        String sql = "SELECT * FROM materias where estado=1 AND id_materia in (SELECT id_materia FROM inscripcion WHERE id_alumno = ?)";
         Materia materia = new Materia();
         List<Materia> materiasCursadas = new ArrayList();
         try {
@@ -130,7 +130,7 @@ public class CursadaData {
 
     public List<Materia> obetenerMateriasNoCursadas(int id) {
         //String sql = "SELECT * FROM materias where id_materia in (SELECT id_materia FROM inscripcion WHERE id_alumno = ? AND nota IS NULL)";
-        String sql = "SELECT * FROM materias where id_materia not in (SELECT id_materia FROM inscripcion WHERE id_alumno = ?)";
+        String sql = "SELECT * FROM materias where estado=1 AND id_materia not in (SELECT id_materia FROM inscripcion WHERE id_alumno = ?)";
         Materia materia = new Materia();
         List<Materia> materiasCursadas = new ArrayList();
         try {
