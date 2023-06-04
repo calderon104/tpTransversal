@@ -73,8 +73,8 @@ public class MateriaData {
             ps.setInt(2,m.getAnio());
             ps.setBoolean(3, m.isEstado());
             ps.setInt(4, m.getId_materia());
-            
-            if(ps.execute()){
+            int result= ps.executeUpdate();
+            if(result==1){
                 JOptionPane.showMessageDialog(null, "Materia editada correctamente");
             }
         }catch(SQLException e){
