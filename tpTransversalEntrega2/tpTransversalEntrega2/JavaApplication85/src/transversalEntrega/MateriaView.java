@@ -229,6 +229,7 @@ public class MateriaView extends javax.swing.JInternalFrame {
         int indice = jtMateria.getSelectedRow();
         int id = (int) jtMateria.getValueAt(indice,0);
         md.eliminarMateria(id);
+        cargarMaterias();
     }//GEN-LAST:event_btnEliminarMateriaActionPerformed
 
     private void jtfAMnombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfAMnombreActionPerformed
@@ -250,6 +251,7 @@ public class MateriaView extends javax.swing.JInternalFrame {
         int anio = Integer.parseInt(jtMateria.getValueAt(indice,2).toString());
         Materia m = new Materia(id,nombre, anio, true);
         md.modificarMateria(m);
+        cargarMaterias();
     }//GEN-LAST:event_btnEditarMateriaActionPerformed
 
     private void btnBuscarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarMateriaActionPerformed
@@ -278,6 +280,7 @@ public class MateriaView extends javax.swing.JInternalFrame {
         int anio = Integer.parseInt(jtfAManio.getText());
         Materia m= new Materia(nombMat, anio, true);
         md.guardarMateria(m);
+        cargarMaterias();
     }//GEN-LAST:event_btnAgregarMateriaActionPerformed
 
 
